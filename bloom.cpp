@@ -1,7 +1,9 @@
 #include <bits/stdc++.h>
-#include"bloom.hpp"
+#include "bloom.hpp"
 #define ll long long
 using namespace std;
+
+// Hash function 1
 int h1(string s, int arrSize)
 {
     ll int hash = 8;
@@ -11,6 +13,8 @@ int h1(string s, int arrSize)
     }
     return hash % arrSize;
 }
+
+// Hash function 2
 int h2(string s, int arrSize)
 {
     ll int hash = 0;
@@ -21,6 +25,8 @@ int h2(string s, int arrSize)
     }
     return hash;
 }
+
+// Hash function 3
 int h3(string s, int arrSize)
 {
     ll int hash = 1;
@@ -31,6 +37,8 @@ int h3(string s, int arrSize)
     }
     return hash % arrSize;
 }
+
+// Hash function 4
 int h4(string s, int arrSize)
 {
     ll int hash = 4;
@@ -42,6 +50,8 @@ int h4(string s, int arrSize)
     }
     return hash;
 }
+
+// Function to check if a string is present in the Bloom filter
 int lookup(bool *bit, int arr, string s)
 {
     ll int a = h1(s, arr);
@@ -50,14 +60,15 @@ int lookup(bool *bit, int arr, string s)
     ll int d = h4(s, arr);
 
     if (!(bit[a] && bit[b] && bit[c] && bit[d]))
-        return 0;
+        return 0; // Not present
     else
-        return 1;
+        return 1; // Probably present
 }
+
+// Function to insert a string into the Bloom filter
 int insert(bool *bit, int Size, string s)
 {
-
-    if (!(lookup(bit, Size, s)))
+    if (!(lookup(bit, Size, s))) // Check if the string is not present
     {
         int a = h1(s, Size);
         int b = h2(s, Size);
@@ -70,12 +81,11 @@ int insert(bool *bit, int Size, string s)
         bit[d] = true;
 
         cout << s << " inserted" << endl;
-        return 1;
+        return 1; // Inserted successfully
     }
     else
     {
-
         cout << s << " is Probably already present" << endl;
-        return 0;
+        return 0; // Probably already present
     }
 }
