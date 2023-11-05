@@ -1,8 +1,8 @@
 # CS201_24
-╔══════════════════════════════════╗
-║   Welcome to Grocery Management  ║
-║              System              ║
-╚══════════════════════════════════╝
+╔     ══════════════════════════════════          ╗
+║   Welcome to Grocery Management  System         ║
+║                                                 ║
+╚      ══════════════════════════════════         ╝
 
 To compile the code, use the following command:
 
