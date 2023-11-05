@@ -43,6 +43,7 @@ label:
                 {
                     if (x == item)
                         found = 1;
+                    cout<<"THe item seems to be present in the store\n";
                 }
 
                 if (!found && !match.empty())
