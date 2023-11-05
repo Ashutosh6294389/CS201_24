@@ -1,7 +1,8 @@
 #include <stdio.h>
-#include<stdlib.h>
-#include<string.h>
+#include <stdlib.h>
+#include <string.h>
 #include "Suffix_tree.h"
+
 char *test;
 SNode *root = NULL;
 SNode *lastNewNode = NULL;
@@ -13,6 +14,8 @@ int END = -1;
 int *rootEnd = NULL;
 int *splitEnd = NULL;
 int size = -1;
+
+// Function to create a new Suffix Tree node
 SNode *newNode(int start, int *end)
 {
    SNode *STSNode = (SNode *)malloc(sizeof(SNode));
@@ -25,14 +28,18 @@ SNode *newNode(int start, int *end)
    STSNode->suffixIndex = -1;
    return STSNode;
 }
+
+// Function to compute the length of an edge
 int edgeLength(SNode *A)
 {
-   if(A==root)
+   if (A == root)
       return 0;
    long int e = *(A->end);
    long int s = A->start;
    return (e - s + 1);
 }
+
+// Function to perform a walk down the tree during the extension of Suffix Tree
 int walkDown(SNode *A)
 {
    // APCFWD - Active point change for walk down using skip/count trick(Trick 1)
@@ -45,27 +52,36 @@ int walkDown(SNode *A)
    }
    return 0;
 }
-void extendSuffixTree(int pos){
+
+// Function to extend the Suffix Tree
+void extendSuffixTree(int pos)
+{
    END = pos;
    remainingSuffixCount++;
    lastNewNode = NULL;
-   while(remainingSuffixCount){
-      if(activeLength==0) activeEdge = pos;
-      if(activeNode->children[test[activeEdge]]==NULL){
-         activeNode->children[test[activeEdge]] = newNode(pos,&END);
-         if(lastNewNode != NULL)
+   while (remainingSuffixCount)
+   {
+      if (activeLength == 0)
+         activeEdge = pos;
+      if (activeNode->children[test[activeEdge]] == NULL)
+      {
+         activeNode->children[test[activeEdge]] = newNode(pos, &END);
+         if (lastNewNode != NULL)
          {
             lastNewNode->suffixLink = activeNode;
             lastNewNode = NULL;
          }
-      }else{
-         SNode* next = activeNode->children[test[activeEdge]];
-         if(walkDown(next))
+      }
+      else
+      {
+         SNode *next = activeNode->children[test[activeEdge]];
+         if (walkDown(next))
          {
             continue;
          }
-         if(test[next->start+activeLength]==test[pos]){
-            if(lastNewNode != NULL && activeNode != root)
+         if (test[next->start + activeLength] == test[pos])
+         {
+            if (lastNewNode != NULL && activeNode != root)
             {
                lastNewNode->suffixLink = activeNode;
                lastNewNode = NULL;
@@ -73,36 +89,45 @@ void extendSuffixTree(int pos){
             activeLength++;
             break;
          }
-         splitEnd = (int*)malloc(sizeof(int));
+         splitEnd = (int *)malloc(sizeof(int));
          *splitEnd = next->start + activeLength - 1;
-         SNode* split = newNode(next->start,splitEnd);
+         SNode *split = newNode(next->start, splitEnd);
          activeNode->children[test[activeEdge]] = split;
-         split->children[test[pos]] = newNode(pos,&END);
+         split->children[test[pos]] = newNode(pos, &END);
          next->start += activeLength;
          split->children[test[next->start]] = next;
-         if(lastNewNode!=NULL){
+         if (lastNewNode != NULL)
+         {
             lastNewNode->suffixLink = split;
          }
          lastNewNode = split;
       }
       remainingSuffixCount--;
-      if(activeNode==root&&activeLength>0){
+      if (activeNode == root && activeLength > 0)
+      {
          activeLength--;
          activeEdge = pos - remainingSuffixCount + 1;
-      }else if(activeNode != root){
+      }
+      else if (activeNode != root)
+      {
          activeNode = activeNode->suffixLink;
       }
    }
 }
+
+// Function to print characters from index i to j
 void print(int i, int j)
 {
 	int k;
-	for (k=i; k<=j; k++)
+	for (k = i; k <= j; k++)
 		printf("%c", test[k]);
 }
+
+// Function to set the suffix index for leaf nodes
 void setSuffixIndex(SNode *n, int labelHeight)
 {
-	if (n == NULL) return;
+	if (n == NULL)
+		return;
 	int leaf = 1;
 	int i;
 	for (i = 0; i < MAX; i++)
@@ -110,8 +135,7 @@ void setSuffixIndex(SNode *n, int labelHeight)
 		if (n->children[i] != NULL)
 		{
 			leaf = 0;
-			setSuffixIndex(n->children[i], labelHeight +
-								edgeLength(n->children[i]));
+			setSuffixIndex(n->children[i], labelHeight + edgeLength(n->children[i]));
 		}
 	}
 	if (leaf == 1)
@@ -119,6 +143,8 @@ void setSuffixIndex(SNode *n, int labelHeight)
 		n->suffixIndex = size - labelHeight;
 	}
 }
+
+// Function to free the Suffix Tree nodes by post-order traversal
 void freeSuffixTreeByPostOrder(SNode *n)
 {
     if (n == NULL)
@@ -135,7 +161,9 @@ void freeSuffixTreeByPostOrder(SNode *n)
         free(n->end);
     free(n);
 }
-void buildSuffixTree(char * text) {
+
+// Function to build the Suffix Tree from the given text
+void buildSuffixTree(char *text) {
    test = text;
    size = strlen(test);
    rootEnd = (int*) malloc(sizeof(int));
@@ -148,6 +176,8 @@ void buildSuffixTree(char * text) {
    int labelHeight = 0;
    setSuffixIndex(root,labelHeight);
 }
+
+// Function to return the root of the Suffix Tree
 SNode* returnRoot(){
    return root;
 }
