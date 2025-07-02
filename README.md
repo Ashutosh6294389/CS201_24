@@ -5,12 +5,12 @@ Crafted By-
 3)Ashutosh Singh (Github- Ashutosh6294389)
 
 
-
 --- Welcome to Grocery Management System ---
 
 To compile the code, use the following command:
-
+'''sh
 g++ Suffix_tree.c PatternSearch.c main.cpp bloom.cpp BK_Tree.cpp
+'''
 
 The project has two ends:
 
