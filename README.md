@@ -1,8 +1,7 @@
 Crafted By-
 
-1)Suryadeep Mallick (Github- Suryadeep2004)
-2)Satyam Kumar (Github- satyam1a2)
-3)Ashutosh Singh (Github- Ashutosh6294389)
+1) Aryan Rajey (Github- 007Aryan007)
+2) Ashutosh Singh (Github- Ashutosh6294389)
 
 
 --- Welcome to Grocery Management System ---
